@@ -1,0 +1,12 @@
+<template>
+    <div class="absolute w-full bg-black bg-opacity-30 h-screen 
+                top-0 left-0 flex justify-center px-8">
+        <div class="p-4 bg-white self-start mt-32 max-w-screen-md">
+            <slot/>
+            <button @click="$emit('close')" class="border-2 rounded-lg px-3 py-1">Close</button>
+        </div>
+    </div>
+</template>
+
+<script setup>
+</script>
