@@ -1,10 +1,7 @@
-# Accredify_Application (PokeDex) 
+# Accredify_Application (PokeDex) 🕹️
 
-## Purpose of this project 🎯
-For my Accredify Internship Application, I was tasked to create a mini frontend project using Vue.JS and Jest for Unit Testing which included at 1 API Integrations, and 1-2 routes/ pages. 
-
-## What is this Project about? 🕹️
-This project showcases a Pokedex which users can search for Pokemons by Name and view its characteristics in the PokeDex, to understand more about the Pokemon and its features.
+## What is this Project about? 🎯
+For my Accredify Internship Application, I was tasked to create a mini frontend project using Vue.JS and Jest for Unit Testing which included at 1 API Integrations, and 1-2 routes/ pages. This project showcases a Pokedex which Users can search for Pokemons by Name and view its characteristics in the PokeDex.
 
 ### Built With 🔨
 
@@ -51,7 +48,7 @@ I managed to develop this project across the span of 1 week, while juggling with
 ## Design Considerations 🖌️
 During my requirement and analysis phase, I wanted to create a simple frontend website which fetches PokeAPI, extract data and render it on the browser DOM, and allow Users to  I used TailwindCSS which is simple CSS utility class to write styling scripts for my frontend application.
 
-## Potential Improvements ::diamond:: 
+## Potential Improvements 💎
 Given more time and resources, I would like to fully implement the additional features to make my PokeDex website more robust, functional and interactive for end-users, thereby enhancing their overall user experience. 
 
 **User Experience**
