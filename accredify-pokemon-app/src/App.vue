@@ -3,8 +3,8 @@
     <div class="select-none flex flex-col text-center">
       <div class="flex flex-row justify-center">
         <span
-          ><img
-            :src="pokeball.sprites.default"
+          ><img 
+            :src="pokeball"
             class="w-16 px-2 m-auto align-middle"
             alt=""
         /></span>
@@ -13,7 +13,7 @@
         </span>
         <span
           ><img
-            :src="pokeball.sprites.default"
+            :src="pokeball"
             class="w-16 px-2 m-auto align-middle"
             alt=""
         /></span>
@@ -40,15 +40,21 @@ export default {
       pokeball: ""
     });
 
-    fetch("https://pokeapi.co/api/v2/item/poke-ball/")
-      .then((res) => res.json())
-      .then((data) => {
-        images.pokeball = data;
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-
+    async function getPokeball(){
+      try{
+        fetch("https://pokeapi.co/api/v2/item/poke-ball/")
+          .then((res) => res.json())
+          .then((data) => {
+            images.pokeball = data.sprites.default;
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+      }catch(err){
+        alert(err) 
+      }}
+    getPokeball();
+   
     return {...toRefs(images)};
   },
 };

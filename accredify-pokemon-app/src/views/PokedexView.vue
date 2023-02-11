@@ -3,81 +3,138 @@
     <div
       class="container h-[75vh] m-auto grid grid-cols-6 grid-rows-4 place-items-start gap-5"
     >
-    <!-- IMAGE -->
-      <div
-        class="col-start-2 row-start-1 row-span-2 bg-orange-50 border-2 border-black p-4 mx-auto min-w-full min-h-full"
-      >
-        <img
-          className="min-w-[80%] m-auto justify-center"
-          :src="pokemon.sprites.front_default"
-          alt=""
-        />
-
-        <h1 class="text-2xl font-bold mb-2">
+      <!-- IMAGE -->
+      <Card class="col-start-2 row-start-1 row-span-2 col-span-2">
+        <template v-slot:header>
           {{ name.charAt(0).toUpperCase() + name.slice(1) }}
-        </h1>
+        </template>
 
-        <p class="text-lg font-semibold">
+        <div class="flex flex-row">
+          <img
+            className="min-w-[30%] scale-[130%] m-auto justify-center"
+            :src="pokemon.sprites.front_default"
+            alt=""
+          />
+
+          <img
+            className="min-w-[30%] scale-[130%] m-auto justify-center"
+            :src="pokemon.sprites.back_default"
+            alt=""
+          />
+        </div>
+
+        <p class="text-base font-semibold py-1">
           <span class="font-bold"> Type: </span>
-          <span v-for="typeVal in types" :key="typeVal.id">
+          <span
+            v-for="typeVal in types"
+            :key="typeVal.id"
+            class="text-white rounded-xl px-3 py-0.5 align-middle"
+            :class="{ [`bg-orange-400`]: 1 }"
+          >
             {{ typeVal.charAt(0).toUpperCase() + typeVal.slice(1) + " " }}
           </span>
         </p>
-      </div>
+
+        <p class="text-sm font-semibold">
+          <span class="font-bold">Height: </span>
+          <span>{{ height }} m | </span>
+          <span class="font-bold">Weight: </span>
+          <span>{{ weight }} lbs</span> |
+          <span class="font-bold">Experience: </span>
+          <span>{{ exp }} pts</span>
+        </p>
+      </Card>
 
       <!-- BASE STATS -->
-      <div class="row-start-3 col-start-2 font-bold text-sm border-black border-2 p-2 mx-auto bg-amber-50 bg-opacity-60 min-w-full">
+      <Card class="row-start-1 col-start-4">
+        <template v-slot:header> Base Stats </template>
 
-
-        <h1 class="text-base font-extrabold px-3">
-          {{ "Base Stats"}}
-        </h1>
-
-        <span v-for="stat in stats" :key="stat.id" class="flex flex-col mx-auto place-items-start pl-3">
-          {{ stat.name.toUpperCase().replace("-", " ") }} : {{ stat.value }} 
+        <span
+          v-for="stat in stats"
+          :key="stat.id"
+          class="flex flex-col mx-auto text-start pl-2"
+        >
+          {{ stat.name.toUpperCase().replace("-", " ") }} : {{ stat.value }}
         </span>
+      </Card>
 
-      </div>
+      <!-- Location -->
+      <Card class="col-start-5 row-start-1">
+        <template v-slot:header> Locations Found! </template>
 
-
-    <!-- MOVESET  -->
-      <div
-        class="col-start-3 row-start-3 col-span-3 font-bold text-sm border-2 border-black bg-amber-100 bg-opacity-60 p-3 min-h-full"
-      >
-        <h1 class="text-xl mb-2">Moves Set</h1>
-
-        <div class="flex flex-wrap justify-center">
-          <p
-            v-for="move in moves.slice(0, 10)"
-            :key="move.id"
-            class="border-2 border-black border-opacity-60 bg-stone-400 bg-opacity-30 text-sm font-bold rounded-xl w-32 p-2 m-1"
-          >
-            <span>
-              {{
-                move.charAt(0).toUpperCase() + move.slice(1).replace("-", " ")
-              }}
-            </span>
-          </p>
+        <div
+          v-for="loc in locations.slice(0, 5)"
+          :key="loc.id"
+          class="border-2 border-gray-500 py-0.5 px-1 my-1.5 rounded-2xl"
+        >
+          {{ loc.replaceAll("-", " ").toUpperCase() }}
         </div>
-      </div>
 
-      <AppDropDown>
-        <template slot="toggler">
-        <button
-            class="relative flex items-center focus:outline-none pl-5 pr-3 py-2 rounded-lg bg-gray-300 text-gray-800 font-semibold"
+        <div
+          v-if="locations.length == 0"
+          class="m-auto align-middle inline-block"
+        >
+          No Locations found.
+        </div>
+      </Card>
+
+      <!-- Abilities -->
+      <Card class="col-start-2 row-start-3 relative">
+        <template v-slot:header> Unique Abilities </template>
+        <div v-for="ability in abilities" :key="ability.id" class="py-1 px-4">
+          <Card
+            @click="hover = ability.name"
+            class="hover:scale-105 select-none"
           >
-        Locations
-        </button>
-      </template>
-        <AppDropDownContent>
+            {{
+              ability.name.charAt(0).toUpperCase() +
+              ability.name.slice(1).replace("-", " ")
+            }}
+          </Card>
+          <Modal v-if="hover == ability.name" @click="hover = false">
+            <Card class="bg-opacity-100 bg-orange-100">
+              <template v-slot:header>
+                {{
+                  ability.name.charAt(0).toUpperCase() +
+                  ability.name.slice(1).replace("-", " ")
+                }}
+              </template>
+              {{ ability.desc }}
+            </Card>
+          </Modal>
+        </div>
+      </Card>
 
-          <AppDropDownItem v-for="loc in locations" :key="loc.id">
-            {{ loc }}
-          </AppDropDownItem>
-        </AppDropDownContent>
-      </AppDropDown>
+      <!-- MOVESET  -->
+      <Card class="col-start-3 row-start-3 col-span-3">
+        <template v-slot:header>Moves Set</template>
 
+        <div class="flex flex-row flex-wrap justify-center">
+          <div v-for="move in moves.slice(0, 10)" :key="move.id">
+            <Card
+              class="min-w-0 w-32 m-1 bg-amber-200 select-none hover:scale-105"
+              @click="hover = move.name"
+            >
+              {{
+                move.name.charAt(0).toUpperCase() +
+                move.name.slice(1).replace("-", " ")
+              }}
+            </Card>
 
+            <Modal v-if="hover == move.name" @click="hover = false">
+              <Card class="bg-opacity-100 bg-orange-100">
+                <template v-slot:header>
+                  {{
+                    move.name.charAt(0).toUpperCase() +
+                    move.name.slice(1).replace("-", " ")
+                  }}
+                </template>
+                {{ move.desc.replace("$effect_chance", move.chance) }}
+              </Card>
+            </Modal>
+          </div>
+        </div>
+      </Card>
     </div>
   </div>
 
@@ -89,15 +146,18 @@
 <script>
 import { reactive, toRefs } from "vue";
 import { useRoute } from "vue-router";
-import AppDropDown from '../components/AppDropdown/AppDropdown.vue'
-import AppDropDownContent from '../components/AppDropdown/AppDropDownContent.vue'
-import AppDropDownItem from '../components/AppDropdown/AppDropDownItem.vue'
+import Card from "../components/Card.vue";
+import Modal from "@/components/Modal.vue";
 
 export default {
-  components:{
-    AppDropDown, 
-    AppDropDownContent, 
-    AppDropDownItem
+  components: {
+    Card,
+    Modal,
+  },
+  data() {
+    return {
+      hover: false,
+    };
   },
   setup() {
     const route = useRoute();
@@ -105,12 +165,14 @@ export default {
     const pokemon = reactive({
       pokemon: null,
       name: "",
+      height: "",
+      weight: "",
+      exp: "",
       types: [],
       moves: [],
       stats: [],
       abilities: [],
-      forms: [],
-      locations: []
+      locations: [],
     });
 
     fetch(`https://pokeapi.co/api/v2/pokemon/${route.params.slug}/`)
@@ -119,6 +181,9 @@ export default {
         // General
         pokemon.pokemon = data;
         pokemon.name = data.name;
+        pokemon.height = data.height;
+        pokemon.weight = data.weight;
+        pokemon.exp = data.base_experience;
 
         // Types
         data.types.forEach((element) => {
@@ -127,35 +192,58 @@ export default {
 
         // Moves
         data.moves.forEach((element) => {
-          pokemon.moves.push(element.move.name);
+          pokemon.moves.push({
+            name: element.move.name,
+          });
+          fetch(element.move.url)
+            .then((res) => res.json())
+            .then((data) => {
+              pokemon.moves.forEach((element) => {
+                if (element.name == data.name) {
+                  element.desc = data.effect_entries[0].effect;
+                  element.chance = data.effect_chance;
+                }
+              });
+            });
         });
-
 
         // Stats
         data.stats.forEach((element) => {
           pokemon.stats.push({
             name: element.stat.name,
-            value: element.base_stat
-          })
-        })
+            value: element.base_stat,
+          });
+        });
 
+        // Location
         fetch(data.location_area_encounters)
           .then((res) => res.json())
-          .then((data)=>{
-            data.forEach(element => {
-              pokemon.locations.push(element.location_area.name)
+          .then((data) => {
+            data.forEach((element) => {
+              pokemon.locations.push(element.location_area.name);
             });
-          })
+          });
 
-        console.log(data);
+        // Abilities
+        data.abilities.forEach((element) => {
+          pokemon.abilities.push({
+            name: element.ability.name,
+            url: element.ability.url,
+          });
+          fetch(element.ability.url)
+            .then((res) => res.json())
+            .then((data) => {
+              pokemon.abilities.forEach((element) => {
+                if (element.name == data.name) {
+                  element.desc = data.effect_entries[1].effect;
+                }
+              });
+            });
+        });
+      })
+      .catch((err) => {
+        console.log(err);
       });
-
-    // fetch(`https://pokeapi.co/api/v2/characteristic/${route.params.slug}/`)
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     // General
-    //     console.log(data)
-    // })
 
     return { ...toRefs(pokemon) };
   },

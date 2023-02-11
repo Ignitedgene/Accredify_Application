@@ -17,10 +17,10 @@
   <!-- SEARCH SUGGESTIONS -->
   <div class="p-4 flex flex-wrap justify-center">
     <div class="text-gray-700 text-opacity-60 font-normal px-2"
-      v-for="(pokemon, idx) in filteredPokemons"
+      v-for="(pokemon, idx) in updatePokemon()"
       :key="idx"
     >
-      <router-link class="hover:font-bold text-center"
+      <router-link class="hover:font-bold text-center" v-if="pokemon!=null"
         :to="`/pokedex/${url[pokemon.name]}`">
         <img :src="`${imgURL}` + `${url[pokemon.name]}` + '.png'" width="96" height="96" alt="" class="m-auto hover:scale-110"/>
         <h3>{{ pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) }}</h3>
@@ -32,45 +32,51 @@
 </template>
 
 <script>
-import { toRefs, reactive, computed } from 'vue';
+import Data from '../components/getData'
+import { reactive } from 'vue';
+
+var pokemon = new Data();
 
 export default {
     name: "SearchView",
 
-    setup(){
-      const state = reactive({
+    data: () => reactive({
         title: "PokeFinder",
         id: 0,
         pokemons: [],
         imgURL: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/",
-        url: {},
+        url: {
+          name: "1",
+          url: "https://pokeapi.co/api/v2/pokemon/1"
+        },
         text: "",
-        filteredPokemons: computed(()=>updatePokemon())
-      })
+    }),
 
-
-      fetch("https://pokeapi.co/api/v2/pokemon?limit=1000")
-            .then((res) => res.json())
-            .then((data) => {
-            state.pokemons = data.results;
-            state.url = data.results.reduce((acc, cur, idx) => 
+    methods: {
+      processPokemon(){
+        var data = pokemon.fetchData(window.fetch);
+        data.then(res => {
+          this.pokemons = res.results;
+          this.url = res.results.reduce((acc, cur, idx) => 
               acc = {...acc, [cur.name]:idx+1 }
             , {});
         })
-            .catch((error) => {
-            console.log(error.message);
-        });
-        
-      function updatePokemon(){
-        if(!state.text){
-          return [] 
+      },
+
+      updatePokemon(){
+
+        if(this.text==""){
+          return []
         }
-        return state.pokemons.filter((pokemon)=> 
-           pokemon.name.includes(state.text)
+        return this.pokemons.filter((pokemon)=> 
+           pokemon.name.includes(this.text)
         )
       }
 
-        return {...toRefs(state)}
+    },
+
+    mounted(){
+      this.processPokemon();
     }
 };
 </script>
