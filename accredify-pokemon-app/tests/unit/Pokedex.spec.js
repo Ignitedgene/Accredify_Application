@@ -19,6 +19,7 @@ const fakeData = {
   
 
 describe("For PokedexView", () => {
+    // Mounting the component, and passing in the relevant props and stubs
     const wrapper = shallowMount(PokedexView, {
         props:{
             route: "1"
@@ -30,6 +31,7 @@ describe("For PokedexView", () => {
           }
     })
 
+    // Adding of slug parameter (ERROR)
     const history = createMemoryHistory();
     history.push("1")
 
@@ -37,4 +39,26 @@ describe("For PokedexView", () => {
         const text = wrapper.find("span")
         expect(text.text()).toContain("Begin by Searching a Pokemon!")
     })
+
+    describe("Mimic an API request with dummy data", ()=>{
+        it("render selected pokemon image", ()=>{
+            const img = wrapper.find("img");
+            expect(img.exists()).toBeTruthy;
+        })
+
+        it("render ability card component", ()=>{
+            const card = wrapper.find("template")
+            expect(card.text()).toContain("Unique Abilities")
+        })
+        
+        it("render base stats card component", ()=>{
+            const card = wrapper.find("template")
+            expect(card.text()).toContain("Base Stats")
+        })        
+        
+        
+        it("render location stats card component", ()=>{
+            const card = wrapper.find("template")
+            expect(card.text()).toContain("Locations Found!")
+        })        })
 });
