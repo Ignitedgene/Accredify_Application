@@ -42,7 +42,8 @@ npm run build
 I managed to develop this project across the span of 1 week, while juggling with my full-time studies and external commitments at NTU. Having prior knowledge in React.JS and TailwindCSS allowed me to quickly learn Vue.JS and create the structure for this frontend project. However, as I was new to the concept of API Integration as well as Unit Testing, I spent more time learning and implementing these features into this website. Nevertheless, I'm proud of having gained the following learning experiences:
 1. Vue.JS framework for developing interactive user interfaces 
 2. Extracting data from an API and utilising API endpoints (i.e. fetching and destructuring JSON data from PokeAPI).
-3. Developing Unit Testing Scripts to test whether the expected UI components are rendered on the webpage as expected.
+3. (Unfinished) Developing Unit Testing Scripts to test whether the expected UI components are rendered on the webpage as expected.  
+   - Due to time contraints, I was unable to fully implement the Unit Testing due to bugs, but I included my thought process on how I would have conducted the Unit Testing in the testing scripts. 
 4. Website Routing and uses of Slug URLs, and its use in creating MultiPage Applications.
 
 ## Design Considerations 🖌️
